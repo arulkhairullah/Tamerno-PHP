@@ -90,22 +90,6 @@ class Recorder {
 		}
 	}
 	
-	public static function locate_url($options){
-		$current_controller = $options['controller'];
-		$current_action 	= $options['action'];
-		
-		foreach (self::$maps as $route){
-			$route_controller	= $route['options']['controller'];
-			$route_action 		= $route['options']['action'];
-			
-			if( ($current_controller == $route_controller) AND ($current_action == $route_action) ){
-				$url = $route['url_path'];
-			}
-		}
-		
-		return (empty($url)) ? false : $url;
-	}
-	
 	private static function map_routes($url_pattern, $options = array(), $requirements = null) {
 		
 		if(!empty($options['requirements'])){
