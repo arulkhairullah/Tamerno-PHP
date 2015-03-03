@@ -59,7 +59,7 @@ class BaseController{
     * @return void
     */
 	protected function render(){
-		debugger(Recorder::get_parse_url("/welcome/index"));
+		debugger(Recorder::locate_url(array("controller" => "blog", "action" => "show")));
 		$this->registry->view->load_to_layout($this->vars);	
 	}
 
