@@ -90,6 +90,36 @@ class Recorder {
 		}
 	}
 	
+	public static function format_url($options, $option_params){
+		foreach (self::$maps as $route){
+			$record_controller		= trim($route['options']['controller']);
+			$record_action			= trim($route['options']['action']);
+			$redirect_controller	= trim($options['controller']);
+			$redirect_action		= trim($options['action']);
+			
+			if( ($record_controller == $redirect_controller) AND ($record_action == $redirect_action) ){
+				$url_format 	= $route['url_path'];
+				$record_params	= $route['optional_params'];
+				$url			= self::insert_params($url_format, $record_params, $option_params);
+			}
+		}
+		
+		return $url;
+	}
+	
+	private static function insert_params($url_format, $record_params, $option_params){
+		$num = count($record_params);
+		$url = $url_format;
+		
+		if($num != 0){
+			foreach($record_params as $key => $value){
+				$url = str_replace(":{$key}", $option_params[$key], $url);
+			}
+		}
+		
+		return $url;
+	}
+	
 	private static function map_routes($url_pattern, $options = array(), $requirements = null) {
 		
 		if(!empty($options['requirements'])){

@@ -59,7 +59,6 @@ class BaseController{
     * @return void
     */
 	protected function render(){
-		//debugger(Recorder::get_parse_url("/welcome/index"));
 		$this->registry->view->load_to_layout($this->vars);	
 	}
 
@@ -79,18 +78,14 @@ class BaseController{
 		$class 		= $this->params['controller'];
 
 		if($controller AND $action){
-			$url = $this->format_url( array("controller" => $options["controller"], "action" => $options["action"]) );
+			$url = Recorder::format_url( array("controller" => $options["controller"], "action" => $options["action"]), $options );
 		}elseif($controller AND ($action == false)){
-			$url = $this->format_url( array("controller" => $options["controller"], "action" => "index") );
+			$url = Recorder::format_url( array("controller" => $options["controller"], "action" => "index"), $options );
 		}elseif(($controller == false) AND $action){
-			$url = $this->format_url( array("controller" => $class, "action" => $options["action"]) );
+			$url = Recorder::format_url( array("controller" => $class, "action" => $options["action"]), $options );
 		}
 		
 		return $url;
-	}
-	
-	private function format_url($options){
-		return "/{$options['controller']}/{$options['action']}";
 	}
 	
 	private function redirect_to_other($options){
@@ -108,7 +103,13 @@ class BaseController{
     * @return void
     */
 	protected function redirect($url){
-		header("Location: $url");
+		header("Location: /" . $this->app_dirname() . $url);
+		exit;
+	}
+	
+	public function app_dirname(){
+		preg_match_all('/(([^\/]){1}(\/\/)?){1,}/', __site_path, $dir_found);
+		return (end($dir_found[0]));
 	}
 	
 	protected function flash($type, $message){
