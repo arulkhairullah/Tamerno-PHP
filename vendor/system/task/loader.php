@@ -28,7 +28,7 @@ class Loader{
 		$this->load_all_files_in_folder('/vendor/system/route');
 		
 		//include the database configuration
-		$this->load_costumize_file('/config/route.php');
+		$this->load_costumize_file('/config/routes.php');
 		
 		//include the controller class
 		$this->load_all_files_in_folder('/vendor/system/controller');
