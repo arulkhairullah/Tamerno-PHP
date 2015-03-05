@@ -38,9 +38,12 @@ class BaseController{
 	* @params $registry
 	*/
 	function __construct($registry){
+
 		$this->registry = $registry;
 		
 		$this->assign_controller_params();
+		
+		$this->load_before_filter();
 	}
 	
     /*
@@ -116,8 +119,16 @@ class BaseController{
 		($type == 'notice') ? Flash::notice($message) : Flash::error($message);
 	}
 	
-	protected function before_filter() {
-		// executed on all request.
+	protected function before_filter($action) {		
+		$this->$action();
+	}
+	
+	//PHP 5 >= 5.1.0
+	protected function load_before_filter(){
+		if(property_exists($this, 'before_filter')){
+			$action = $this->before_filter[0];
+			$this->before_filter($action);
+		}
 	}
 	
 	private function assign_controller_params(){
