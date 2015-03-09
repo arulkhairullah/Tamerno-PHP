@@ -22,10 +22,17 @@ class BaseController{
 	public	$current_controller;
 	
     /**
-    * @set $action variable
+    * @set $current_action variable
     * @access public
     */
 	public	$current_action;
+	
+    /**
+    * @set $layout variable
+    * @access public
+	* @default = 'application'
+    */
+	public	$layout = 'application';
 	
     /**
     * @set $params variable type or array
@@ -40,10 +47,11 @@ class BaseController{
 	function __construct($registry){
 
 		$this->registry = $registry;
-		
+
 		$this->assign_controller_params();
 		
 		$this->load_before_filter();
+		
 	}
 	
     /*
@@ -62,7 +70,8 @@ class BaseController{
     * @return void
     */
 	protected function render(){
-		$this->registry->view->load_to_layout($this->vars);	
+		$this->set_current_layout();
+		$this->registry->view->load_to_layout($this->vars);
 	}
 
 	protected function redirect_to($options){
@@ -141,6 +150,10 @@ class BaseController{
 		);
 		
 		$this->params =  array_merge($this->params, $other_array);
+	}
+	
+	private function set_current_layout(){
+		$this->registry->view->layout = $this->layout;
 	}
 	//all controller must be have action index
 	//abstract function index();

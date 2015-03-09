@@ -144,7 +144,7 @@ class BaseRouter {
 	private function set_view_file(){
 		$this->checking_sub_views_directory();
 		
-		$this->view_file = $this->views_directory . "/" . $this->action . ".php";
+		$this->view_file = $this->views_directory . "/" . $this->action . ".html";
 		
 		//check existing file
 		if( is_readable($this->view_file) == false ){

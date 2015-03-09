@@ -9,7 +9,6 @@ class BaseView{
     */
 	private	$registry;
 	
-	
     /**
 	* @set the layout_file variable
     * @access private
@@ -27,6 +26,13 @@ class BaseView{
     * @access public
     */
 	public	$action;
+	
+    /**
+    * @set $layout variable
+    * @access public
+	* @default = 'application'
+    */
+	public	$layout;
 	
     /**
 	* @set the vars variable
@@ -49,7 +55,7 @@ class BaseView{
 	* @param $registry
     */
 	function __construct($registry){
-		$this->set_layout_file($registry);
+		$this->registry = $registry;
 		$this->include_view_helpers();
 		$this->assign_the_view_attributes($registry);
 	}
@@ -109,6 +115,7 @@ class BaseView{
 	* @return void
     */
 	public function load_to_layout($controller_vars){
+		$this->set_layout_file();
 		$this->controller_vars = $controller_vars;
 		$this->load_main_layout_file();
 	}
@@ -121,7 +128,6 @@ class BaseView{
 	* @return void
     */
 	private function assign_the_view_attributes($registry){
-		$this->registry 	= $registry;
 		$this->controller	= $this->registry->route->controller;
 		$this->action		= $this->registry->route->action;
 	}
@@ -194,7 +200,7 @@ class BaseView{
 	* @return void
     */
 	private function set_layout_file(){
-		$this->layout_file = __site_path . "/app/views/layout/application.php";
+		$this->layout_file = __site_path . "/app/views/layout/{$this->layout}.html";
 		$this->exist_layout_file();
 	}
 	

@@ -57,6 +57,10 @@ class BaseModel {
 		$this->create_connection();
 	}
 	
+	public static function initialize(){
+		return (new self);
+	}
+	
     /**
 	* @set the destruct method
     * @access local
@@ -149,9 +153,9 @@ class BaseModel {
 	* @param $sql variable contain params sql condition
 	* @return object mysqli
     */
-	protected function find_by_sql($sql){
-		return $this->select($sql);
-	}
+	//protected function find_by_sql($sql){
+	//	return $this->select($sql);
+	//}
 	
     /**
 	* @set the find_all method
@@ -180,19 +184,19 @@ class BaseModel {
 	* @param $sql variable contain params sql condition
 	* @return object mysqli
     */
-	public static function static_find_by_sql($sql){
-		return self::static_query($sql);
+	public static function find_by_sql($sql){
+		$object = self::initialize();
+		return $object->query($sql);
 	}
 	
     /**
 	* @set the static_query method
-    * @access local static
+    * @access local
 	* @param $sql variable contain params sql condition
 	* @return object mysqli
     */
-	static function static_query($sql){
-		$db = new BaseModel;
-		return $db->connection->query($sql);
+	function query($sql){
+		return $this->connection->query($sql);
 	}
 	
     /**
